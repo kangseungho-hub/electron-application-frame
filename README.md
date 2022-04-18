@@ -14,6 +14,6 @@ Electron으로 application을 개발하다 보면 프로젝트를 시작할 때 
 
 
 
--scripts
-    -start : start electron application
-    -dev : watch webpack
+- scripts
+    - start : start electron application
+    - dev : watch webpack
