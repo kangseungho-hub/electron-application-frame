@@ -8,8 +8,5 @@ contextBridge.exposeInMainWorld(
         on: (channel, func) => {
             ipcRenderer.on(channel, func)
         },
-        loadPlayList : () => {
-            console.log()
-        }
     }
 )
