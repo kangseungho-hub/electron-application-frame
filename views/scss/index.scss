@@ -1,0 +1,35 @@
+$window-controll-pannel-color : #ff9626;
+$bg-color : #fffefd;
+
+body{
+    background-color: $bg-color;
+    .window-controll-pannel{
+        position : fixed;
+        top : 0;
+        right : 0;
+        width : 100%;
+        height : auto;
+        padding : 10px;
+        display : grid;
+        justify-content: end;
+        -webkit-app-region: drag;
+
+        .btns{
+            display : grid;
+            grid-template-columns: repeat(3, 1fr);
+            -webkit-app-region: none;
+
+            .btn{
+                display : flex;
+                align-items: center;
+                justify-content: center;
+                color : black;
+                padding : 5px;
+
+                &:hover{
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}       
