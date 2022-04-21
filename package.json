@@ -1,26 +1,28 @@
 {
-  "name": "project-frame",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "electron ./src/index.js",
-    "dev": "webpack"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "concurrently": "^7.1.0",
-    "css-loader": "^6.7.1",
-    "electron": "^18.0.4",
-    "node-sass": "^7.0.1",
-    "sass": "^1.50.0",
-    "sass-loader": "^12.6.0",
-    "style-loader": "^3.3.1",
-    "webpack-cli": "^4.9.2"
-  },
-  "dependencies": {
-    "webpack": "^5.72.0"
-  }
+    "name": "project-frame",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "electron ./dist/index.js",
+        "dev": "concurrently \"webpack\" \"tsc-watch\""
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "concurrently": "^7.1.0",
+        "css-loader": "^6.7.1",
+        "electron": "^18.0.4",
+        "node-html-parser": "^5.3.3",
+        "node-sass": "^7.0.1",
+        "path": "^0.12.7",
+        "sass": "^1.50.0",
+        "sass-loader": "^12.6.0",
+        "style-loader": "^3.3.1",
+        "webpack-cli": "^4.9.2"
+    },
+    "dependencies": {
+        "webpack": "^5.72.0"
+    }
 }
