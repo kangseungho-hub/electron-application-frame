@@ -1,9 +1,9 @@
-import { BrowserWindow } from "electron"
+import { BrowserWindow, ipcMain} from "electron"
 import path = require("path")
 
 const mainWindowConfig = {
-    width : 1080,
-    height : 720,
+    width : 570,
+    height : 980,
     show : false,
     frame : false,
     webPreferences : {
@@ -15,26 +15,24 @@ const mainWindowConfig = {
 export class WindowManager{
     mainWindow:BrowserWindow
     ipcMain : NodeJS.EventEmitter
-    constructor(ipcMain){
+    constructor(){
         this.mainWindow = undefined
-
-        this.ipcMain = ipcMain
     }
 
     createMainWindow(config){
-        this.mainWindow = new BrowserWindow(mainWindowConfig)
+        this.mainWindow = new BrowserWindow(config)
         
         this.mainWindow.loadFile("../views/index.html")
 
-        this.ipcMain.on("window-close", () => { 
+        ipcMain.on("window-close", () => { 
             this.mainWindow.close()
         })
 
-        this.ipcMain.on("window-minimize", () => {
+        ipcMain.on("window-minimize", () => {
             this.mainWindow.minimize()
         })
 
-        this.ipcMain.on("window-maximize", () => {
+        ipcMain.on("window-maximize", () => {
             this.mainWindow.maximize()
         })
     }

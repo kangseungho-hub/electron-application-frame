@@ -1,8 +1,9 @@
-import { app, ipcMain } from 'electron';
+import { app, ipcMain} from 'electron';
 import { WindowManager } from './lib/windows';
 import { Crawler } from "./lib/crawler"
 
-let windowManager = new WindowManager(ipcMain)
+let windowManager = new WindowManager()
+
 app.whenReady()
     .then(() => {
         windowManager.showMainWindow()
