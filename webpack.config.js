@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
     mode: 'development',
-    entry: ['./views/js/style.js', './views/js/window-controll.js'],
+    entry: ['./views/js/style.js', './views/js/window-controll.js', './views/js/search.js'],
     output: {
         path: path.resolve(__dirname, 'views'),
         filename: 'bundle.js',
