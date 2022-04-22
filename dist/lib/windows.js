@@ -4,8 +4,8 @@ exports.WindowManager = void 0;
 const electron_1 = require("electron");
 const path = require("path");
 const mainWindowConfig = {
-    width: 1080,
-    height: 720,
+    width: 570,
+    height: 980,
     show: false,
     frame: false,
     webPreferences: {
@@ -13,20 +13,19 @@ const mainWindowConfig = {
     }
 };
 class WindowManager {
-    constructor(ipcMain) {
+    constructor() {
         this.mainWindow = undefined;
-        this.ipcMain = ipcMain;
     }
     createMainWindow(config) {
-        this.mainWindow = new electron_1.BrowserWindow(mainWindowConfig);
+        this.mainWindow = new electron_1.BrowserWindow(config);
         this.mainWindow.loadFile("../views/index.html");
-        this.ipcMain.on("window-close", () => {
+        electron_1.ipcMain.on("window-close", () => {
             this.mainWindow.close();
         });
-        this.ipcMain.on("window-minimize", () => {
+        electron_1.ipcMain.on("window-minimize", () => {
             this.mainWindow.minimize();
         });
-        this.ipcMain.on("window-maximize", () => {
+        electron_1.ipcMain.on("window-maximize", () => {
             this.mainWindow.maximize();
         });
     }
