@@ -1,12 +1,8 @@
-import {Builder, By, Key, untilm, ThenableWebdriver} from "selenium-webdriver"
-import {parse} from "node-html-parser"
-import {hostname} from "os"
-const path = require("path")
-const driver = new Builder().forBrowser("firefox").build()
-
+import {Builder, By, Key, until, ThenableWebDriver} from "selenium-webdriver"
+import path = require("path")
 
 export class Agent {
-    driver:ThenableWebdriver
+    driver: ThenableWebDriver
     protocol : "http" | "https"
     hostname : string
 
@@ -18,11 +14,16 @@ export class Agent {
         this.driver = new Builder().forBrowser("firefox").build()
     }
 
-    get baseURL():String{
+    get baseURL():string{
         return `${this.protocol}://${this.hostname}`
     }
 
-    async openPage(_path:String, params:Object) {
+    deleteCookies(){
+        this.driver.manage().deleteAllCookies()
+    }
+
+    async openPage(_path:string, params:Object) {
+        await this.deleteCookies()
         let url = path.join(this.baseURL, _path)
 
         if (params) {
@@ -30,17 +31,17 @@ export class Agent {
         }
 
         for (const [key, value] of Object.entries(params)) {
-            url += `${key}=${value}`
+            url += `&${key}=${value}`
         }
 
-        await driver.get(url)
+        await this.driver.get(url)
     }
 
-    getHTML(_path:String, params:Object):Promise<string>{
+    getHTML(_path:string, params:Object):Promise<string>{
         return new Promise((resolve, reject) => {
             this.openPage(_path, params)
                 .then(() => {
-                    const html = driver.findElement(By.tagName("html")).getAttribute("innerHTML")
+                    const html = this.driver.findElement(By.tagName("html")).getAttribute("innerHTML")
 
                     resolve(html)
                 })
@@ -48,5 +49,9 @@ export class Agent {
                     reject(err)
                 })
         })
+    }
+
+    quit(){
+        return this.driver.quit()
     }
 }

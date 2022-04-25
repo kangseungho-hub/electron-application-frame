@@ -1,11 +1,39 @@
 {
     "name": "project-frame",
     "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
+    "description": "test!",
+    "main": "build/index.js",
     "scripts": {
         "start": "electron ./dist/index.js",
-        "dev": "concurrently \"webpack\" \"tsc-watch\""
+        "dev": "concurrently \"webpack\" \"tsc-watch\"",
+        "build": "electron-builder build"
+    },
+    "type": "commonjs",
+    "build": {
+        "asar": true,
+        "appId": "seungho-hub.id",
+        "productName": "cp-crawler",
+        "win": {
+            "target": {
+                "target": "nsis"
+            },
+            "icon": "./views/images/icon.ico"
+        },
+        "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": false,
+            "createDesktopShortcut": true,
+            "perMachine": true,
+            "language": 1042,
+            "installerIcon": "./views/images/icon.ico",
+            "shortcutName": "cpc",
+            "artifactName": "cpc-1.0.0.exe",
+            "uninstallDisplayName": "NB"
+        },
+        "directories": {
+            "buildResources": "./src",
+            "output": "./"
+        }
     },
     "keywords": [],
     "author": "",
@@ -13,13 +41,16 @@
     "devDependencies": {
         "concurrently": "^7.1.0",
         "css-loader": "^6.7.1",
-        "electron": "^18.0.4",
+        "electron": "^18.1.0",
+        "electron-build": "^0.0.3",
+        "electron-builder": "^23.0.3",
         "jquery": "^3.6.0",
         "node-html-parser": "^5.3.3",
         "node-sass": "^7.0.1",
         "path": "^0.12.7",
         "sass": "^1.50.0",
         "sass-loader": "^12.6.0",
+        "selenium-webdriver": "^4.1.1",
         "style-loader": "^3.3.1",
         "webpack-cli": "^4.9.2"
     },
