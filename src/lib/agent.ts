@@ -1,5 +1,8 @@
-import {Builder, By, Key, until, ThenableWebDriver} from "selenium-webdriver"
+import {Builder, By, Key, until, ThenableWebDriver, Options} from "selenium-webdriver"
+import chrome = require("selenium-webdriver/chrome")
+import firefox = require("selenium-webdriver/firefox")
 import path = require("path")
+
 
 export class Agent {
     driver: ThenableWebDriver
@@ -11,7 +14,20 @@ export class Agent {
         this.hostname = hostname
 
 
-        this.driver = new Builder().forBrowser("firefox").build()
+        this.driver = this.initialDriver()
+    }
+
+    initialDriver():ThenableWebDriver{
+        let browserSize = {width : 1080, height : 720}
+
+        let chromeOption = new chrome.Options().windowSize(browserSize)
+        let firefoxOption = new firefox.Options().windowSize(browserSize)
+
+        return new Builder()
+        .setChromeOptions(chromeOption)
+        .setFirefoxOptions(firefoxOption)
+        .forBrowser("chrome")
+        .build()
     }
 
     get baseURL():string{
