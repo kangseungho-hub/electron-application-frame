@@ -1,3 +1,5 @@
+const { modalmanager } = require("./modal")
+
 let searchForm = $("#search")
 let searchInput = searchForm.find("input")
 
@@ -16,26 +18,37 @@ searchForm.on("submit", (e) => {
         text: searchText,
         delay: searchDelay,
     }
-    api.send("get", searchOption)
+    api.send("search", searchOption)
 
     placeHolder.hide()
     crawlingLoader.show()
     result.hide()
 
-    api.on("r-get", (e, products) => {
-        products.forEach(product => {
-            let productDiv = $("<div class = 'product'></div>")
+    api.on("r-search", (e, items) => {
+        result.empty()
 
-            let name = $(`<span class = "name">${product.name}</span>`)
-            let price = $(`<span class = "price">${product.price}</span>`)
+        items.forEach(item => {
+            let itemDiv = $("<div class = 'item'></div>")
 
-            productDiv.append(name)
-            productDiv.append(price)
+            let name = $(`<span class = "name">${item.name}</span>`)
+            let price = $(`<span class = "price">${item.price}</span>`)
 
-            result.append(productDiv)
+            itemDiv.append(name)
+            itemDiv.append(price)
+
+            result.append(itemDiv)
         })
 
         result.show()
         crawlingLoader.hide()
+    })
+
+    api.on("err-search", (e, err) => {
+        if (err) {
+            modalmanager.showErrorModal(err.message, () => {
+                crawlingLoader.hide()
+                placeHolder.show()
+            })
+        }
     })
 })
