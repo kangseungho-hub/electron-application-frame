@@ -2,38 +2,36 @@
     "name": "project-frame",
     "version": "1.0.0",
     "description": "test!",
-    "main": "build/index.js",
+    "main": "index.js",
     "scripts": {
-        "start": "electron ./dist/index.js",
+        "start": "electron index.js",
         "dev": "concurrently \"webpack\" \"tsc-watch\"",
-        "build": "electron-builder build"
+        "build": "electron-builder build --win",
+        "extract-asar": "yarn asar extract C:\\Users\\seungho\\Documents\\seungho-hub\\outSourcing\\electron-application-frame\\build\\win-unpacked\\resources\\app.asar C:\\Users\\seungho\\Documents\\seungho-hub\\outSourcing\\electron-application-frame\\build\\win-unpacked\\resources\\asar-view"
     },
     "type": "commonjs",
     "build": {
         "asar": true,
         "appId": "seungho-hub.id",
-        "productName": "cp-crawler",
+        "productName": "seungho-hub",
         "win": {
-            "target": {
-                "target": "nsis"
-            },
+            "target": "portable",
             "icon": "./views/images/icon.ico"
         },
         "nsis": {
             "oneClick": false,
             "allowToChangeInstallationDirectory": false,
-            "createDesktopShortcut": true,
             "perMachine": true,
             "language": 1042,
             "installerIcon": "./views/images/icon.ico",
-            "shortcutName": "cpc",
-            "artifactName": "cpc-1.0.0.exe",
+            "shortcutName": "sh",
+            "artifactName": "sh-1.0.0.exe",
             "uninstallDisplayName": "NB"
         },
         "directories": {
-            "buildResources": "./src",
-            "output": "./"
-        }
+            "output": "./build"
+        },
+        "includeSubNodeModules": true
     },
     "keywords": [],
     "author": "",
@@ -52,9 +50,10 @@
         "sass-loader": "^12.6.0",
         "selenium-webdriver": "^4.1.1",
         "style-loader": "^3.3.1",
+        "webpack": "^5.72.0",
         "webpack-cli": "^4.9.2"
     },
     "dependencies": {
-        "webpack": "^5.72.0"
+        "@types/selenium-webdriver": "^4.0.19"
     }
 }
