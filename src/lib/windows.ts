@@ -22,7 +22,7 @@ export class WindowManager{
     createMainWindow(config){
         this.mainWindow = new BrowserWindow(config)
         
-        this.mainWindow.loadFile("../views/index.html")
+        this.mainWindow.loadFile(path.join(__dirname, "../../views/index.html"))
 
         ipcMain.on("window-close", () => { 
             this.mainWindow.close()
