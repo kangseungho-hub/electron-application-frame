@@ -1,6 +1,6 @@
 import {app, ipcMain} from 'electron'
-import {WindowManager}  from './lib/windows'
-import {Crawler, searchOption} from "./lib/crawler"
+import {WindowManager}  from './src/lib/windows'
+import {Crawler, searchOption} from "./src/lib/crawler"
 
 const crawler = new Crawler()
 let windowManager = new WindowManager()
@@ -26,10 +26,13 @@ app.on("window-all-closed", (e) => {
     })
 })
 
-ipcMain.on("get", (e, option:searchOption) => {
+ipcMain.on("search", (e, option:searchOption) => {
     crawler.searchProducts(option)
-    .then(products => {
-        e.reply("r-get",products)
+    .then(item => {
+        e.reply("r-search",item)
+    })
+    .catch(err => {
+        e.reply("err-search", err)
     })
 })
 
