@@ -2,9 +2,13 @@
     "compilerOptions": {
         "module": "commonjs",
         "target" : "ES2018",
-        "sourceMap": true,
-        "outDir" : "dist",
+        "baseUrl" : "./",
+        "paths" : {
+                "index.ts" : ["./"],
+                "src/*" : ["dist/*"],
+                "src/lib/*" : ["dist/lib/*"],
+        }
     },
 
-    "include" : ["src/lib/*.ts", "src/*.ts"]
+    "include" : ["src/lib/*.ts", "src/*.ts", "index.ts"]
 }
