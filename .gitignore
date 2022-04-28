@@ -1,5 +1,6 @@
 node_modules/
 dist/
+views/bundle.js
 build/
 src/lib/*.js
 src/*.js
