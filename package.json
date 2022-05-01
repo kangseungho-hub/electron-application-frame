@@ -7,31 +7,30 @@
         "start": "electron index.js",
         "dev": "concurrently \"webpack\" \"tsc-watch\"",
         "build": "electron-builder build --win",
-        "extract-asar": "yarn asar extract C:\\Users\\seungho\\Documents\\seungho-hub\\outSourcing\\electron-application-frame\\build\\win-unpacked\\resources\\app.asar C:\\Users\\seungho\\Documents\\seungho-hub\\outSourcing\\electron-application-frame\\build\\win-unpacked\\resources\\asar-view"
+        "extract-asar": "yarn asar extract C:\\Users\\seungho\\Documents\\seungho-hub\\outSourcing\\coupang-crawller\\build\\win-unpacked\\resources\\app.asar C:\\Users\\seungho\\Documents\\seungho-hub\\outSourcing\\coupang-crawller\\build\\win-unpacked\\resources\\asar-view"
     },
     "type": "commonjs",
     "build": {
-        "asar": true,
+        "asar": false,
         "appId": "seungho-hub.id",
         "productName": "seungho-hub",
         "win": {
-            "target": "portable",
-            "icon": "./views/images/icon.ico"
+            "target": "nsis",
+            "icon": "./views/images/main.ico"
         },
         "nsis": {
             "oneClick": false,
-            "allowToChangeInstallationDirectory": false,
+            "allowToChangeInstallationDirectory": true,
             "perMachine": true,
             "language": 1042,
-            "installerIcon": "./views/images/icon.ico",
-            "shortcutName": "sh",
-            "artifactName": "sh-1.0.0.exe",
+            "installerIcon": "./views/images/main.ico",
+            "shortcutName": "cd",
+            "artifactName": "crawler-demo-1.0.0.exe",
             "uninstallDisplayName": "NB"
         },
         "directories": {
             "output": "./build"
-        },
-        "includeSubNodeModules": true
+        }
     },
     "keywords": [],
     "author": "",
@@ -40,7 +39,6 @@
         "concurrently": "^7.1.0",
         "css-loader": "^6.7.1",
         "electron": "^18.1.0",
-        "electron-build": "^0.0.3",
         "electron-builder": "^23.0.3",
         "jquery": "^3.6.0",
         "node-html-parser": "^5.3.3",
@@ -54,7 +52,11 @@
         "webpack-cli": "^4.9.2"
     },
     "dependencies": {
-        "@types/selenium-webdriver": "^4.0.19",
+        "chromedriver": "^100.0.0",
+        "node-html-parser": "^5.3.3",
+        "path": "^0.12.7",
+        "sass": "^1.50.0",
+        "selenium-webdriver": "^4.1.1",
         "xlsx": "^0.18.5"
     }
 }

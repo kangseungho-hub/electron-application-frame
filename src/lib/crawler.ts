@@ -1,7 +1,10 @@
 import {Agent } from "./agent"
 import {parse } from "node-html-parser"
+import {ipcMain} from "electron"
 
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+
+let CRAWLER_ACTIVE = false
 
 export type searchOption ={
     text : string,
@@ -14,11 +17,21 @@ export class Crawler {
         this.agent = new Agent("https","coupang.com")
     }
 
-    async searchProducts(option:searchOption):Promise<Object[]>{
+    async searchItems(option:searchOption):Promise<Object[]>{
         let result = []
 
         let page = 1
-        while (true) {
+
+
+        ipcMain.on("interrupt-search", () => {
+            CRAWLER_ACTIVE = false
+        })
+
+        CRAWLER_ACTIVE = true
+
+
+        while (CRAWLER_ACTIVE) {
+            console.log(CRAWLER_ACTIVE)
             let html = await this.agent.getHTML("np/search", {
                 q: option.text,
                 page : page,

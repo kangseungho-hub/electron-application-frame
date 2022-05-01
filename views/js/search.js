@@ -1,4 +1,5 @@
 const { modalmanager } = require("./modal")
+const { toExcelBtn } = require("./operation")
 
 let searchForm = $("#search")
 let searchInput = searchForm.find("input")
@@ -14,6 +15,11 @@ searchForm.on("submit", (e) => {
     let searchText = searchInput.val()
     let searchDelay = searchDelaySelection.val()
 
+    if (searchInputIsInvalid(searchText)) {
+        modalmanager.showNoticeModal("검색어가 유효하지 않습니다.")
+        return
+    }
+
     let searchOption = {
         text: searchText,
         delay: searchDelay,
@@ -21,7 +27,7 @@ searchForm.on("submit", (e) => {
     api.send("search", searchOption)
 
     placeHolder.hide()
-    crawlingLoader.show()
+    showLoader()
     result.hide()
 
     api.on("r-search", (e, items) => {
@@ -39,16 +45,40 @@ searchForm.on("submit", (e) => {
             result.append(itemDiv)
         })
 
+
+        hideLoader()
         result.show()
-        crawlingLoader.hide()
     })
 
     api.on("err-search", (e, err) => {
         if (err) {
-            modalmanager.showErrorModal(err.message, () => {
-                crawlingLoader.hide()
+            modalmanager.showNoticeModal(err.message, () => {
+                hideLoader()
                 placeHolder.show()
             })
         }
     })
 })
+
+function showLoader() {
+    crawlingLoader.css("display", "flex")
+
+    console.log("show!")
+
+    $(".interrupt").one("click", () => {
+        console.log("stop!!")
+        api.send("interrupt-search")
+    })
+}
+
+function hideLoader() {
+    crawlingLoader.hide()
+}
+
+function searchInputIsInvalid(text) {
+    if (text) {
+        return false
+    }
+
+    return true
+}

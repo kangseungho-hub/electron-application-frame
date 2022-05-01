@@ -1,6 +1,7 @@
 import {Builder, By, Key, until, ThenableWebDriver, Options} from "selenium-webdriver"
-import chrome = require("selenium-webdriver/chrome")
-import firefox = require("selenium-webdriver/firefox")
+const fs = require("fs")
+const chrome = require("selenium-webdriver/chrome")
+
 import path = require("path")
 
 
@@ -15,17 +16,25 @@ export class Agent {
 
 
         this.driver = this.initialDriver()
+
+        let outputPath = path.join(__dirname, "../../output")
+
+        if(!fs.existsSync(outputPath)){
+            fs.mkdirSync(outputPath )
+        }
+
     }
 
     initialDriver():ThenableWebDriver{
         let browserSize = {width : 1080, height : 720}
 
+        let service = new chrome.ServiceBuilder(path.join(__dirname, "../../drivers/chromedriver.exe")).build()
+        chrome.setDefaultService(service)
+
         let chromeOption = new chrome.Options().windowSize(browserSize)
-        let firefoxOption = new firefox.Options().windowSize(browserSize)
 
         return new Builder()
         .setChromeOptions(chromeOption)
-        .setFirefoxOptions(firefoxOption)
         .forBrowser("chrome")
         .build()
     }

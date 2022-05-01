@@ -44,7 +44,7 @@
         <form id="search">
             <div class="wrapper">
                 <input type="text" placeholder="검색">
-                <button>긁어버렷!</button>
+                <button>데이터 가져오기</button>
             </div>
 
             <div class="search-delay">
@@ -52,7 +52,7 @@
                     딜레이
                 </div>
                 <select name="search-delay-value" id="search-delay-value">
-                    <option value="0">0초</option>
+                    <option value="0">없음</option>
                     <option value="100">0.1초</option>
                     <option value="300">0.3초</option>
                     <option value="500">0.5초</option>
@@ -63,25 +63,21 @@
         </form>
 
         <div id="result-container">
-            <div class="place-holder">No Data..</div>
+            <div class="place-holder">비어있습니다</div>
             <div class="crawling-loader-wrapper">
                 <div class="loader">Loading...</div>
+                <p>데이터를 가져오는 중입니다..</p>
+                <button class="interrupt">멈춰!</button>
             </div>
+
+            <!--result 안에  주석을 포함한 아무 코드도 없어야함. toExcel button의 disable, enable적용-->
             <div class="result">
-                <!-- <div class="product">
-                    <span class="name">나이키 반팔티</span>
-                    <span class="price">10,400원</span>
-                </div> -->
             </div>
         </div>
 
+
         <div id="operation">
-            <button class="to-excel">
-                excel 파일로 출력
-            </button>
-            <button class="expend-function">
-                추가 기능
-            </button>
+            <a href="../output/temp.xlsx" class="to-excel" disabled>Excel로 다운로드</a>
         </div>
     </div>
 </body>

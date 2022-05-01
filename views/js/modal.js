@@ -3,16 +3,12 @@ class ModalManager {
         this.modalContainer = $(".modal-wrapper")
 
         this.modals = {
-            notice: $(".error-modal")
+            notice: $(".notice-modal")
         }
 
         this.closeBtns = {
-            notice: $(".error-modal .close")
+            notice: $(".notice-modal .footer")
         }
-
-        this.closeBtns.notice.on("click", (e) => {
-            this.modalContainer.hide()
-        })
     }
 
     openModal() {
@@ -25,7 +21,9 @@ class ModalManager {
         this.modals.notice.find(".body").text(message)
         this.modals.notice.show()
 
-        closeCb()
+        this.closeBtns.notice.one("click", (e) => {
+            this.modalContainer.hide()
+        })
     }
 }
 

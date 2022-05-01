@@ -1,7 +1,7 @@
 import {app, ipcMain} from 'electron'
 import {WindowManager}  from './src/lib/windows'
 import {Crawler, searchOption} from "./src/lib/crawler"
-
+import {ExcelFileGenerator} from "./src/lib/xlsxManager"
 const crawler = new Crawler()
 let windowManager = new WindowManager()
 
@@ -27,9 +27,10 @@ app.on("window-all-closed", (e) => {
 })
 
 ipcMain.on("search", (e, option:searchOption) => {
-    crawler.searchProducts(option)
-    .then(item => {
-        e.reply("r-search",item)
+    crawler.searchItems(option)
+    .then(items => {
+        ExcelFileGenerator.createTempWithJson(items)
+        e.reply("r-search",items)
     })
     .catch(err => {
         e.reply("err-search", err)
