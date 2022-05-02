@@ -3,9 +3,12 @@ import path = require("path")
 
 const mainWindowConfig = {
     width : 570,
+    minWidth : 570,
     height : 980,
+    minHeight : 980,
     show : false,
     frame : false,
+    darkTheme : true,
     webPreferences : {
         preload : path.join(__dirname, "../preload.js")
     }
@@ -33,6 +36,10 @@ export class WindowManager{
         })
 
         ipcMain.on("window-maximize", () => {
+            ipcMain.once("window-unmaximize", () => {
+                this.mainWindow.unmaximize()
+            })
+
             this.mainWindow.maximize()
         })
     }

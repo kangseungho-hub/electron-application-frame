@@ -4,3 +4,4 @@ views/bundle.js
 build/
 index.js
 src/*.js
+src/lib/*.js

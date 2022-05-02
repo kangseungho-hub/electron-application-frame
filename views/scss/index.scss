@@ -61,6 +61,9 @@ body {
                 &:hover {
                     cursor: pointer;
                 }
+                &.unmaximize {
+                    display: none;
+                }
             }
         }
     }
@@ -122,7 +125,7 @@ body {
                 flex-direction: row;
                 background-color: $base-color;
                 border-radius: 18px;
-                width: 30%;
+                width: 40%;
                 margin-top: 20px;
                 height: 100%;
                 .label {
@@ -143,6 +146,7 @@ body {
                     color: gray;
                     border: 0.5px solid $base-color;
                     text-align: center;
+                    appearance: auto;
                     &:hover {
                         cursor: pointer;
                     }
