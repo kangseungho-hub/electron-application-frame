@@ -24,6 +24,8 @@ class ModalManager {
         this.closeBtns.notice.one("click", (e) => {
             this.modalContainer.hide()
         })
+
+        closeCb()
     }
 }
 
