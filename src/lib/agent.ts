@@ -31,8 +31,10 @@ export class Agent {
 
     initialDriver():WebDriver{
         let browserSize = {width : 1080, height : 720}
-
-        let service = new chrome.ServiceBuilder(path.join(__dirname, "../../drivers/chromedriver.exe")).build()
+        
+    
+    
+        let service = new chrome.ServiceBuilder(getChromeDriverPath()).build()
         chrome.setDefaultService(service)
 
         let chromeOption = new chrome.Options().windowSize(browserSize)
@@ -90,5 +92,16 @@ export class Agent {
 
     quit(){
         return this.driver.quit()
+    }
+}
+
+function getChromeDriverPath():string{
+    let chromeDriver_build_path = path.join(__dirname, "../../../drivers/chromedriver.exe")
+    let chromeDriver_dev_path = path.join(__dirname, "../../drivers/chromedriver.exe")
+
+    if(fs.existsSync(chromeDriver_dev_path)){
+        return chromeDriver_dev_path
+    }else if(fs.existsSync(chromeDriver_build_path)){
+        return chromeDriver_build_path
     }
 }
