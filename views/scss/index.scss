@@ -209,7 +209,24 @@ body {
                     margin: 10px;
                     border-radius: 15px;
                     border: 0.5px solid $base-color;
-                    padding: 10px;
+                    transition-duration: 0.3s;
+                    display: grid;
+                    grid-template-areas: "name" "price";
+                    grid-template-rows: 1fr 2fr;
+                    overflow: hidden;
+                    &:hover {
+                        cursor: pointer;
+                        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
+                        transform: translateY(-10px)
+                    }
+                    * {
+                        padding: 10px;
+                    }
+                    .name {
+                        grid-area: name;
+                        background-color: $base-color;
+                        color: white;
+                    }
                 }
             }
         }
