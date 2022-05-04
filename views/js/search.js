@@ -31,7 +31,7 @@ searchForm.on("submit", (e) => {
     api.on("r-search", (e, items) => {
         result.empty()
 
-        if (items) {
+        if (items.length > 0) {
             items.forEach(item => {
                 let itemDiv = $("<div class = 'item'></div>")
 
@@ -43,7 +43,6 @@ searchForm.on("submit", (e) => {
 
                 result.append(itemDiv)
             })
-
 
             showResult()
         } else {
