@@ -26,9 +26,7 @@ searchForm.on("submit", (e) => {
     }
     api.send("search", searchOption)
 
-    placeHolder.hide()
     showLoader()
-    result.hide()
 
     api.on("r-search", (e, items) => {
         result.empty()
@@ -47,17 +45,15 @@ searchForm.on("submit", (e) => {
             })
 
 
-            hideLoader()
-            result.show()
+            showResult()
+            return
         }
-        hideLoader()
         showPlaceHolder()
     })
 
     api.on("err-search", (e, err) => {
         if (err) {
             modalmanager.showNoticeModal(err.message, () => {
-                hideLoader()
                 showPlaceHolder()
             })
         }
@@ -75,7 +71,9 @@ function searchInputIsInvalid(text) {
 }
 
 function showPlaceHolder() {
+    crawlingLoader.hide()
     placeHolder.css("display", "flex")
+    result.hide()
 }
 
 function showLoader() {
@@ -84,8 +82,13 @@ function showLoader() {
     $(".interrupt").one("click", () => {
         api.send("interrupt-search")
     })
+
+    placeHolder.hide()
+    result.hide()
 }
 
-function hideLoader() {
+function showResult() {
+    result.show()
     crawlingLoader.hide()
+    placeHolder.hide()
 }
