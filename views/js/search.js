@@ -46,9 +46,9 @@ searchForm.on("submit", (e) => {
 
 
             showResult()
-            return
+        } else {
+            showPlaceHolder()
         }
-        showPlaceHolder()
     })
 
     api.on("err-search", (e, err) => {
