@@ -31,7 +31,6 @@ export class Crawler {
 
 
         while (CRAWLER_ACTIVE) {
-            console.log(CRAWLER_ACTIVE)
             let html = await this.agent.getHTML("np/search", {
                 q: option.text,
                 page : page,
