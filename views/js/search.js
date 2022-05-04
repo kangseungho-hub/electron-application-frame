@@ -33,52 +33,59 @@ searchForm.on("submit", (e) => {
     api.on("r-search", (e, items) => {
         result.empty()
 
-        items.forEach(item => {
-            let itemDiv = $("<div class = 'item'></div>")
+        if (items) {
+            items.forEach(item => {
+                let itemDiv = $("<div class = 'item'></div>")
 
-            let name = $(`<span class = "name">${item.name}</span>`)
-            let price = $(`<span class = "price">${item.price}</span>`)
+                let name = $(`<span class = "name">${item.name}</span>`)
+                let price = $(`<span class = "price">${item.price}</span>`)
 
-            itemDiv.append(name)
-            itemDiv.append(price)
+                itemDiv.append(name)
+                itemDiv.append(price)
 
-            result.append(itemDiv)
-        })
+                result.append(itemDiv)
+            })
 
 
+            hideLoader()
+            result.show()
+        }
         hideLoader()
-        result.show()
+        showPlaceHolder()
     })
 
     api.on("err-search", (e, err) => {
         if (err) {
             modalmanager.showNoticeModal(err.message, () => {
                 hideLoader()
-                placeHolder.show()
+                showPlaceHolder()
             })
         }
     })
 })
 
-function showLoader() {
-    crawlingLoader.css("display", "flex")
-
-    console.log("show!")
-
-    $(".interrupt").one("click", () => {
-        console.log("stop!!")
-        api.send("interrupt-search")
-    })
-}
-
-function hideLoader() {
-    crawlingLoader.hide()
-}
-
+//search input validator
+//this fuction will be called when user submit search form
 function searchInputIsInvalid(text) {
     if (text) {
         return false
     }
 
     return true
+}
+
+function showPlaceHolder() {
+    placeHolder.css("display", "flex")
+}
+
+function showLoader() {
+    crawlingLoader.css("display", "flex")
+
+    $(".interrupt").one("click", () => {
+        api.send("interrupt-search")
+    })
+}
+
+function hideLoader() {
+    crawlingLoader.hide()
 }
