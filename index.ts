@@ -2,7 +2,11 @@ import {app, ipcMain} from 'electron'
 import {WindowManager}  from './src/lib/windows'
 import {Crawler, searchOption} from "./src/lib/crawler"
 import {ExcelFileGenerator} from "./src/lib/xlsxManager"
-const crawler = new Crawler()
+const crawler = new Crawler({
+    protocol: 'https',
+    hostname: "dappradar.com"
+})
+
 let windowManager = new WindowManager()
 
 app.whenReady()
@@ -27,6 +31,9 @@ app.on("window-all-closed", (e) => {
 })
 
 ipcMain.on("search", (e, option:searchOption) => {
+    option.path = "rankings"
+    option.params = {}
+
     crawler.searchItems(option)
     .then(items => {
         ExcelFileGenerator.createTempWithJson(items)

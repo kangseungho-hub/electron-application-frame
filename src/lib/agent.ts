@@ -1,19 +1,23 @@
-import {Builder, By, WebDriver} from "selenium-webdriver"
+import {Builder, By, WebDriver, until} from "selenium-webdriver"
 import {WebDriverError, NoSuchWindowError} from "selenium-webdriver/lib/error"
 
 const fs = require("fs")
 const chrome = require("selenium-webdriver/chrome")
 import path = require("path")
 
+export type hostOption = {
+    protocol : "http" | "https",
+    hostname : string,
+}
 
 export class Agent {
     _driver: WebDriver
     protocol : "http" | "https"
     hostname : string
 
-    constructor(protocol:"http" | "https", hostname : string) {
-        this.protocol = protocol
-        this.hostname = hostname
+    constructor(option : hostOption) {
+        this.protocol = option.protocol
+        this.hostname = option.hostname
 
 
         this._driver = this.initialDriver()
@@ -29,11 +33,13 @@ export class Agent {
         return this._driver
     }
 
+    get baseURL():string{
+        return `${this.protocol}://${this.hostname}`
+    }
+
     initialDriver():WebDriver{
         let browserSize = {width : 1080, height : 720}
         
-    
-    
         let service = new chrome.ServiceBuilder(getChromeDriverPath()).build()
         chrome.setDefaultService(service)
 
@@ -43,10 +49,6 @@ export class Agent {
         .setChromeOptions(chromeOption)
         .forBrowser("chrome")
         .build()
-    }
-
-    get baseURL():string{
-        return `${this.protocol}://${this.hostname}`
     }
 
     deleteCookies(){
@@ -67,27 +69,6 @@ export class Agent {
         }
 
         await this.driver.get(url)
-    }
-
-    getHTML(_path:string, params:Object):Promise<string>{
-        return new Promise((resolve, reject) => {
-            this.openPage(_path, params)
-                .then(() => {
-                    const html = this.driver.findElement(By.tagName("html")).getAttribute("innerHTML")
-
-                    resolve(html)
-                })
-                .catch(err => {
-                    let error = new Error()
-                    error.message = "알 수 없는 오류가 발생했습니다."
-
-                    //webdriver를 사용할 수 없는 경우, browser를 종료했을 확률이 높음.
-                    if(err instanceof WebDriverError || err instanceof NoSuchWindowError){
-                        error.message = "크롬 드라이버가 사용 불가능합니다. 프로그램을 재시작하고 브라우저를 닫지 마세요"
-                    }
-                    reject(error)
-                })
-        })
     }
 
     quit(){

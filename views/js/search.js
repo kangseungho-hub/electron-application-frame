@@ -36,7 +36,7 @@ searchForm.on("submit", (e) => {
                 let itemDiv = $("<div class = 'item'></div>")
 
                 let name = $(`<span class = "name">${item.name}</span>`)
-                let price = $(`<span class = "price">${item.price}</span>`)
+                let price = $(`<span class = "price">${item.ccys}</span>`)
 
                 itemDiv.append(name)
                 itemDiv.append(price)
