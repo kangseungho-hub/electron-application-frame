@@ -10,5 +10,5 @@
         }
     },
 
-    "include" : ["src/lib/*.ts", "src/*.ts", "index.ts"]
+    "include" : ["src/lib/*.ts", "src/*.ts", "index.ts"],
 }

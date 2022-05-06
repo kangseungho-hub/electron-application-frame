@@ -1,4 +1,5 @@
-import {Agent } from "./agent"
+import {Agent, hostOption } from "./agent"
+import {By, until, Locator} from "selenium-webdriver"
 import {parse } from "node-html-parser"
 import {ipcMain} from "electron"
 
@@ -6,21 +7,25 @@ const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 let CRAWLER_ACTIVE = false
 
+function querySelector(selector:string):Locator{
+    return By.css(selector)
+}
+
 export type searchOption ={
+    path : string,
+    params : Object,
     text : string,
     delay : number
 }
 
-export class Crawler {
-    agent : Agent
-    constructor() {
-        this.agent = new Agent("https","coupang.com")
+
+export class Crawler extends Agent{
+    constructor(option:hostOption) {
+        super(option)
     }
 
     async searchItems(option:searchOption):Promise<Object[]>{
         let result = []
-
-        let page = 1
 
 
         ipcMain.on("interrupt-search", () => {
@@ -29,57 +34,42 @@ export class Crawler {
 
         CRAWLER_ACTIVE = true
 
+        let page = 1
 
         while (CRAWLER_ACTIVE) {
-            let html = await this.agent.getHTML("np/search", {
-                q: option.text,
-                page : page,
-            })
-    
-            let parser = parse(html)
-
-            let productDivs = parser.querySelectorAll(".search-product")
-
-            //crawling종료 조건1
-            //현재 page에 상품이 없다면
-            if(productDivs.length == 0){
-                break;
-            }
-
-            productDivs.forEach(productDiv => {
-                let nameDiv = productDiv.querySelector(".name")
-                let priceDiv = productDiv.querySelector(".price-value")
-
-                //product스킵
-                //price value혹은 name가 없는 경우 제외(확인된 상품 : 중고, )
-                if (nameDiv && priceDiv) {
-                    result.push({
-                        name: nameDiv.innerText,
-                        price: priceDiv.innerText
-                    });
-                }
-            })    
-
+                await this.openPage(`/rankings/${page}`, option.params)
+                await this.driver.wait(until.elementLocated(querySelector(".rankings-table")))
             
-            let nextPage = parser.querySelector(".search-pagination .selected+a")
-
-            //crawling종료 조건 2.
-            //다음 page가 없는 경우
-            if(nextPage){
-                page += 1
-
-                if(option.delay != 0){
-                    await delay(option.delay)
+                
+                let dAppAnchors = await this.driver.wait(until.elementsLocated(querySelector(".rankings-table > a")))
+    
+                for (const [_, anchor] of Object.entries(dAppAnchors)){
+                    let column = await anchor.findElement(querySelector(".rankings-column__name"))
+                    let name_ccy_div = await column.findElement(querySelector(":scope > div:nth-child(2)"));
+    
+                    let name = await name_ccy_div.findElement(querySelector(":scope > span")).getAttribute("innerText");
+                    let ccys = await name_ccy_div.findElement(querySelector(":scope > div")).getAttribute("innerText")
+    
+                    result.push({
+                        name,
+                        ccys,
+                    })
                 }
-            }else{
-                break;
-            }
+    
+                let pagesContainer= await this.driver.wait(until.elementLocated(querySelector(".rankings-table+div div")))
+                let nextPage = await pagesContainer.findElement(querySelector(":scope>div+a"))
+                
+                if(nextPage){
+                    page++;
+                }else{
+                    break;
+                }
         }
 
         return result
     }
 
-    quit(){
-        return this.agent.quit()
+    quit(): Promise<void> {
+        return super.quit()
     }
 }
