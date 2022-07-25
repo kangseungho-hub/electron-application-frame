@@ -1,1 +1,1 @@
-application frame of outSourcing
+application template of outSourcing
