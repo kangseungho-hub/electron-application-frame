@@ -1,1 +1,1 @@
-application boilerplate for outSourcing
+boilerplate for outSourcing
